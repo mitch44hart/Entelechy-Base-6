@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pythagorean Triplets in Base 6</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        input, button {
+            padding: 8px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        #results {
+            margin-top: 20px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pythagorean Triplets in Base 6</h1>
+
+    <label for="limit">Enter limit for triplets:</label>
+    <input type="number" id="limit" value="20" min="1">
+    <button onclick="generateTriplets()">Generate Triplets</button>
+
+    <h2>Results</h2>
+    <pre id="results"></pre>
+
+    <script>
+        // Convert a number to base 6
+        function toBase6(n) {
+            if (n === 0) return '0';
+            let digits = [];
+            while (n) {
+                digits.push(n % 6);
+                n = Math.floor(n / 6);
+            }
+            return digits.reverse().join('');
+        }
+
+        // Calculate Pythagorean triplets up to the given limit
+        function pythagoreanTriplets(limit) {
+            let triplets = [];
+            for (let a = 1; a < limit; a++) {
+                for (let b = a; b < limit; b++) {
+                    let c = Math.sqrt(a * a + b * b);
+                    if (Number.isInteger(c)) {
+                        triplets.push([a, b, c]);
+                    }
+                }
+            }
+            return triplets;
+        }
+
+        // Generate the triplets and display them in base 6
+        function generateTriplets() {
+            let limit = parseInt(document.getElementById('limit').value);
+            let triplets = pythagoreanTriplets(limit);
+            let results = document.getElementById('results');
+            
+            // Clear previous results
+            results.textContent = '';
+
+            // If no triplets found
+            if (triplets.length === 0) {
+                results.textContent = "No triplets found.";
+                return;
+            }
+
+            // Format and display each triplet in base 6
+            triplets.forEach(triplet => {
+                let base6Triplet = `(${toBase6(triplet[0])}, ${toBase6(triplet[1])}, ${toBase6(triplet[2])})`;
+                results.textContent += base6Triplet + '\n';
+            });
+        }
+    </script>
+
+</body>
+</html>
